@@ -1,0 +1,27 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Main</title>
+  <script src="editor.js"></script>
+</head>
+
+<body>
+  <div id="myapp"></div>
+  <script>
+  var parentWindow = window.parent;
+  var app = Elm.QVG2.init({
+    node: document.getElementById('myapp')
+  });
+  app.ports.sendMes.subscribe(function(str) {
+	  //console.log(str);
+	  parentWindow.postMessage(str, '*');
+  });
+  
+  window.addEventListener("message", receiveMessage, false);
+  function receiveMessage(event){
+  	console.log(event.data);
+	app.ports.receiveMes.send(event.data);
+  }
+  </script>
+</body>
+</html>
